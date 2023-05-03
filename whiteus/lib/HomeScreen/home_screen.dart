@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(
-            height: 80,
+            height: 50,
           ),
           Expanded(child: makeList(imageTitle, imagePath)),
           //Expanded(child: makeList(imageclass))
