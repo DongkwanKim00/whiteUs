@@ -20,21 +20,18 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(
             height: 50,
           ),
-          Expanded(child: makeList(imageTitle, imagePath)),
-          //Expanded(child: makeList(imageclass))
+          Expanded(child: makePageView(imageTitle, imagePath)),
         ],
       ),
     );
   }
 }
 
-ListView makeList(List<String> imageTitle, List<String> imagePath) {
-  return ListView.separated(
-    scrollDirection: Axis.horizontal,
+PageView makePageView(List<String> imageTitle, List<String> imagePath) {
+  return PageView.builder(
     itemCount: imageTitle.length,
-    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+    controller: PageController(viewportFraction: 0.8),
     itemBuilder: (context, index) {
-      //var image = imageclass[index];
       return GestureDetector(
         onTap: () {
           Navigator.push(
@@ -50,6 +47,7 @@ ListView makeList(List<String> imageTitle, List<String> imagePath) {
           );
         },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Hero(
               tag: index.toString(),
@@ -80,6 +78,5 @@ ListView makeList(List<String> imageTitle, List<String> imagePath) {
         ),
       );
     },
-    separatorBuilder: (context, index) => const SizedBox(width: 40),
   );
 }
