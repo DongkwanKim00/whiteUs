@@ -13,8 +13,6 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     const LocalScreen(),
@@ -49,12 +47,6 @@ class _BaseScreenState extends State<BaseScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-
-            icon: Icon(Icons.shopping_cart),
-            label: 'Shopping cart',
-          ),
-          BottomNavigationBarItem(
-
             icon: Icon(Icons.comment),
             label: 'Community',
           ),
