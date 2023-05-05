@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'dart:developer';
 
 import 'DataModel.dart';
+import 'Player.dart';
 import 'RestClient.dart';
 
 void main() => runApp(const WidgetDemo());
@@ -79,7 +80,15 @@ class WidgetDemoState extends State<WidgetDemo> {
           title: Text(response.snippet.title),
           subtitle: Text('View : ${response.statistics.viewCount}'),
           trailing: const Icon(Icons.favorite_border),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Player('dyRsYk0LyA8',
+                  response.snippet.title),
+              ),
+            );
+          },
         ),
       ],
     );
