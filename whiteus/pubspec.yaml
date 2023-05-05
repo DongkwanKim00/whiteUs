@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  path_provider: ^2.0.14
+  file_picker: ^5.2.11
+  audioplayers: ^4.0.1
 
   youtube_player_flutter: ^8.0.0
   http: ^0.13.6
@@ -74,6 +77,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/HomeScreen/image/
+    - assets/Over_the_Horizon.mp3  #이거 추가함ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ제발 돼라 제바라ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
