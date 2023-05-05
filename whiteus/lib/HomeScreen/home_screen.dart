@@ -74,6 +74,7 @@ PageView makePageView(List<String> imageTitle, List<String> imagePath) {
               imageTitle[index],
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
             ),
+            
           ],
         ),
       );
