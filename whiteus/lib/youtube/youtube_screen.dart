@@ -38,9 +38,9 @@ getData(){
       "AIzaSyAvmIOOgWdDr6dieGgUK40wuUjmV8i_nAA",
       "items(id,snippet(publishedAt,title,thumbnails),statistics(viewCount))",
       "snippet,statistics").then((it){
-        setState((){
-          response=((it['items'] as List)[0]) as VideoItems;
-          isLoading=true;
+        setState(() {
+          response = ((it['items'] as List)[0]) as VideoItems;
+          isLoading = true;
           log('${response.snippet.title}');
         });
   });
