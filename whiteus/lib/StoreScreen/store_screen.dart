@@ -5,10 +5,10 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: const Text("Store Screen"),
-      ),
+    return const Scaffold(
+      // body: Container(
+      //   child: const Text("Store Screen"),
+      // ),
     );
   }
 }
