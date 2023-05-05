@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whiteus/CommunityScreen/com_screen.dart';
 import 'package:whiteus/HomeScreen/home_screen.dart';
-import 'package:whiteus/SearchScreen/search_screen.dart';
+import 'package:whiteus/LocalScreen/local_screen.dart';
 import 'package:whiteus/StoreScreen/store_screen.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _BaseScreenState extends State<BaseScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    const SearchScreen(),
+    const LocalScreen(),
     const ComScreen(),
     const StoreScreen(),
   ];
@@ -57,8 +57,8 @@ class _BaseScreenState extends State<BaseScreen> {
             label: 'Community',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.store),
-            label: 'Store',
+            icon: Icon(Icons.shopping_cart),
+            label: 'Shopping cart',
           ),
         ],
         type: BottomNavigationBarType.fixed,
