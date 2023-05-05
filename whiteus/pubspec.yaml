@@ -30,7 +30,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   youtube_player_flutter: ^8.0.0
+  http: ^0.13.6
+  retrofit: ^4.0.1
+  json_annotation: ^4.8.1
 
 
 
@@ -42,6 +46,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  retrofit_generator: ^6.0.0+3
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.2
+
   
 
   # The "flutter_lints" package below contains a set of recommended lints to

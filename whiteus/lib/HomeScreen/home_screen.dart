@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(
-            height: 50,
+            height: 100,
           ),
           Expanded(child: makePageView(imageTitle, imagePath)),
         ],
