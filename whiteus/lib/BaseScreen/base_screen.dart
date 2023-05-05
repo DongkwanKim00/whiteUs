@@ -63,8 +63,6 @@ class _BaseScreenState extends State<BaseScreen> {
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Colors.white,
         backgroundColor: Colors.black87,
         onTap: _onItemTapped,
       ),

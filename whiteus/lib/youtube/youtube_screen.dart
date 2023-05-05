@@ -38,10 +38,12 @@ class WidgetDemoState extends State<WidgetDemo> {
     final client = RestClient(dio);
     client
         .getYouTubeAPI(
+
         "dyRsYk0LyA8",
         "AIzaSyAvmIOOgWdDr6dieGgUK40wuUjmV8i_nAA",
         "items(id,snippet(publishedAt,title,thumbnails),statistics(viewCount))",
         "snippet,statistics")
+
         .then((it) {
       setState(() {
         response = ((it['items'] as List)[0]) as VideoItems;
@@ -84,8 +86,10 @@ class WidgetDemoState extends State<WidgetDemo> {
             Navigator.push(
               context,
               MaterialPageRoute(
+
                 builder: (context) => Player('dyRsYk0LyA8',
                     response.snippet.title),
+
               ),
             );
           },
