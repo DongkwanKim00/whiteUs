@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/youtube_video_player.dart';
 import 'card_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -75,7 +74,6 @@ PageView makePageView(List<String> imageTitle, List<String> imagePath) {
               imageTitle[index],
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
             ),
-            const YouTubeVideoPlayer(videoId: 'UBURTj20HXI'),
           ],
         ),
       );
