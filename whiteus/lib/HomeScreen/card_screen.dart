@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/youtube_video_player.dart';
+
 class CardScreen extends StatelessWidget {
   final String title, image, id;
   const CardScreen({
@@ -41,6 +43,7 @@ class CardScreen extends StatelessWidget {
               ),
             ],
           ),
+          const YouTubeVideoPlayer(videoId: 'I-TrcwHFsPw'),
         ],
       ),
     );
