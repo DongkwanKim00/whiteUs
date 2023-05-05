@@ -25,7 +25,8 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
         mute: false,
       ),
     );
-    videoInfo = fetchVideoInfo(widget.videoId,'AIzaSyAvmIOOgWdDr6dieGgUK40wuUjmV8i_nAA');
+    videoInfo = fetchVideoInfo(
+        widget.videoId, 'AIzaSyAvmIOOgWdDr6dieGgUK40wuUjmV8i_nAA');
   }
 
   @override
@@ -60,7 +61,8 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
                     children: [
                       Text(
                         snapshot.data!['title'],
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         '조회수: ${snapshot.data!['viewCount']}',
