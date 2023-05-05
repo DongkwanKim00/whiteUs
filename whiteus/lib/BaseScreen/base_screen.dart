@@ -49,8 +49,8 @@ class _BaseScreenState extends State<BaseScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.shopping_cart),
+            label: 'Shopping cart',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.comment),
