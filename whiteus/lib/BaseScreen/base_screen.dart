@@ -13,8 +13,6 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     MusicPlayer(path: 'Over_the_Horizon.mp3'), //원래 LocalScreen
@@ -53,16 +51,13 @@ class _BaseScreenState extends State<BaseScreen> {
             label: 'Shopping cart',
           ),
           BottomNavigationBarItem(
-
             icon: Icon(Icons.comment),
             label: 'Community',
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.store),
             label: 'Store',
           ),
-
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
