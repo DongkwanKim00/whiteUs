@@ -14,6 +14,7 @@ class YoutubeWidget extends StatefulWidget {
 class _YoutubeWidgetState extends State<YoutubeWidget> {
   late YoutubePlayerController _controller;
   late Future<Map<String, dynamic>> videoInfo;
+  bool _showPlayer = false;
 
   @override
   void initState() {
@@ -21,7 +22,7 @@ class _YoutubeWidgetState extends State<YoutubeWidget> {
     _controller = YoutubePlayerController(
       initialVideoId: widget.videoId,
       flags: const YoutubePlayerFlags(
-        autoPlay: true,
+        autoPlay: false,
         mute: false,
       ),
     );
@@ -33,6 +34,13 @@ class _YoutubeWidgetState extends State<YoutubeWidget> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _onPlayButtonPressed() {
+    setState(() {
+      _showPlayer = true;
+      _controller.play();
+    });
   }
 
   @override
@@ -54,15 +62,38 @@ class _YoutubeWidgetState extends State<YoutubeWidget> {
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
                 ),
-                child: YoutubePlayerBuilder(
-                  player: YoutubePlayer(
-                    controller: _controller,
-                    showVideoProgressIndicator: true,
-                  ),
-                  builder: (context, player) {
-                    return player;
-                  },
-                ),
+                child: _showPlayer
+                    ? AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: YoutubePlayer(
+                          controller: _controller,
+                          showVideoProgressIndicator: true,
+                        ),
+                      )
+                    : InkWell(
+                        onTap: _onPlayButtonPressed,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.network(
+                              'https://img.youtube.com/vi/${widget.videoId}/hqdefault.jpg',
+                              fit: BoxFit.contain,
+                            ),
+                            Positioned(
+                              bottom: MediaQuery.of(context).size.height * 0.25,
+                              left: 0,
+                              right: 0,
+                              child: const Center(
+                                child: Icon(
+                                  Icons.play_circle_outline,
+                                  color: Colors.black,
+                                  size: 64,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
               ),
             ),
             Expanded(
