@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
-import '../widgets/youtube_widget.dart';
+import 'package:whiteus/widgets/youtube_widget.dart';
 
-class CardScreen extends StatelessWidget {
+class CardScreen extends StatefulWidget {
   final String title, image, id;
 
   const CardScreen({
@@ -13,25 +12,42 @@ class CardScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    List<String> videoIds = [
-      'I-TrcwHFsPw',
-      'PwHlMZf_nNo',
-      'Iwdq3NtpeFQ',
-    ];
+  State<CardScreen> createState() => _CardScreenState();
+}
 
+class _CardScreenState extends State<CardScreen> {
+  final PageController pageController = PageController();
+  bool showIcon = true;
+
+  List<String> videoIds = [
+    'I-TrcwHFsPw',
+    'PwHlMZf_nNo',
+    'Iwdq3NtpeFQ',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[100],
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height, // 화면 높이를 기반으로 이미지와 카드뉴스를 나눕니다.
-              child: Center(
-                child: Hero(
-                  tag: id,
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 30,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Hero(
+                  tag: widget.id,
                   child: Container(
-                    width: 250,
+                    width: 60,
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -43,24 +59,56 @@ class CardScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    child: Image.asset(image),
+                    child: Image.asset(widget.image),
                   ),
                 ),
-              ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  "${widget.title} White Noise Playlist",
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w800),
+                ),
+              ],
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height, // 카드뉴스 부분의 높이를 설정합니다.
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return YoutubeWidget(videoId: videoIds[index]);
-                },
-                itemCount: videoIds.length,
-                itemWidth: 300.0,
-                layout: SwiperLayout.STACK,
-              ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: Stack(
+              children: [
+                PageView(
+                  controller: pageController,
+                  onPageChanged: (page) {
+                    if (mounted) {
+                      setState(() {
+                        showIcon = (page == 2 ? false : true);
+                      });
+                    }
+                  },
+                  children: videoIds
+                      .map((id) => YoutubeWidget(
+                            videoId: id,
+                          ))
+                      .toList(),
+                ),
+                Visibility(
+                  visible: showIcon,
+                  child: const Positioned(
+                    bottom: 30,
+                    right: 20,
+                    child: Icon(
+                      Icons.arrow_circle_right_outlined,
+                      size: 35,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
