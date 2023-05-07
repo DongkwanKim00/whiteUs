@@ -47,7 +47,7 @@ class _CardScreenState extends State<CardScreen> {
                 Hero(
                   tag: widget.id,
                   child: Container(
-                    width: 60,
+                    width: 50,
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
