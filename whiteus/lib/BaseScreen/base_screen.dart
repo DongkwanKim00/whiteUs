@@ -15,9 +15,9 @@ class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    const LocalScreen(),
+    MusicPlayer(path: 'Over_the_Horizon.mp3'), //원래 LocalScreen
     const ComScreen(),
-    const StoreScreen(),
+    Mp3UploaderDownloader(), //이거 수정했음. 원래 StoreScreen
   ];
 
   void _onItemTapped(int index) {
@@ -47,16 +47,16 @@ class _BaseScreenState extends State<BaseScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Shopping cart',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.comment),
             label: 'Community',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.store),
             label: 'Store',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Shopping cart',
           ),
         ],
         type: BottomNavigationBarType.fixed,
