@@ -29,13 +29,12 @@ class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
   String _filePath = '';
 
   // Method to upload an mp3 file to the server
-  Future<void> uploadMp3(File file) async {
+  Future<void> uploadMp3(File file, String fileName) async {
 
     FirebaseStorage.instance
-        .ref('/whiteus/')
+        .ref('$fileName')
         .putFile(file);
 
-    // final storage = FirebaseStorage.instance;
   }
 
     // Method to download an mp3 file from the server
@@ -61,7 +60,8 @@ class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
       );
       if(result != null) {
         File file = File(result.files.single.path.toString());
-      await uploadMp3(file);
+        String fileName = file.path.split('/').last;
+      await uploadMp3(file, fileName);
       }
     }
 
