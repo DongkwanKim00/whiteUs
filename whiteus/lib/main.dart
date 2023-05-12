@@ -17,10 +17,11 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: const Color.fromRGBO(40, 44, 55, 1),
         scaffoldBackgroundColor: const Color.fromRGBO(30, 34, 45, 1),
+        fontFamily: "SUIT", //suit 폰트 적용(형권)
         textTheme: const TextTheme(
           displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.white70),
           titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic, color: Colors.white70),
-          bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.white70),
+          bodyMedium: TextStyle(fontSize: 14.0, color: Colors.white70),
         ),
         colorScheme: const ColorScheme.dark().copyWith(
           secondary: const Color.fromRGBO(80, 84, 95, 1),
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+
 
 
 

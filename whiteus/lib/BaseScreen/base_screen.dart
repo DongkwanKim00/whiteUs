@@ -11,6 +11,65 @@ class BaseScreen extends StatefulWidget {
   State<BaseScreen> createState() => _BaseScreenState();
 }
 
+// 글자 형광펜 그은 것처럼 만들어 줌(형권)
+class HighLightedText extends StatelessWidget {
+  final String data;
+  final Color color;
+  final double fontSize;
+
+  const HighLightedText(
+      this.data, {
+        super.key,
+        required this.color,
+        this.fontSize = 14,
+      });
+
+  Size getTextSize({
+    required String text,
+    required TextStyle style,
+    required BuildContext context,
+  }) {
+    final Size size = (TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textScaleFactor: MediaQuery.of(context).textScaleFactor,
+      textDirection: TextDirection.ltr,
+    )..layout())
+        .size;
+    return size;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle textStyle = TextStyle(
+      fontSize: fontSize,
+      color: color,
+      fontWeight: FontWeight.bold,
+    );
+    final Size textSize = getTextSize(
+      text: data,
+      style: textStyle,
+      context: context,
+    );
+    return Stack(
+      children: [
+        Text(data, style: textStyle),
+        Positioned(
+          top: textSize.height / 2,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(2),
+              color: color.withOpacity(0.5),
+            ),
+            height: textSize.height / 3,
+            width: textSize.width,
+          ),
+        )
+      ],
+    );
+  }
+}
+
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
@@ -30,12 +89,13 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'White Us',
-          style: TextStyle(fontWeight: FontWeight.w800),
+        title: const HighLightedText(
+          'WHITE US',
+          color:Colors.white,
+          fontSize:20,
         ),
         centerTitle: true,
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.transparent, //투명으로 바꿈.
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -61,7 +121,7 @@ class _BaseScreenState extends State<BaseScreen> {
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.transparent, //투명한게 깔끔해서 바꿈.
         onTap: _onItemTapped,
       ),
     );
