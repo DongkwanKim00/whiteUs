@@ -29,6 +29,7 @@
             {
               "client_id": "950303674553-3t5qrngrvojq1fhnf27u5d1tah4b7okb.apps.googleusercontent.com",
               "client_type": 3
+
             },
             {
               "client_id": "950303674553-n1vbuhs2rgrprnhpbj64467u74b8hig3.apps.googleusercontent.com",
@@ -36,6 +37,8 @@
               "ios_info": {
                 "bundle_id": "com.example.whiteus"
               }
+
+
             }
           ]
         }

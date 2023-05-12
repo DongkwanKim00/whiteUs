@@ -1,6 +1,6 @@
 # whiteus
 
-A new Flutter project.
+A new flutter project.
 
 ## Getting Started
 
