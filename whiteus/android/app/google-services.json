@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "950303674553",
+    "project_id": "whiteus-d76e6",
+    "storage_bucket": "whiteus-d76e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950303674553:android:aa70f9c9c79a6afc218b68",
+        "android_client_info": {
+          "package_name": "com.example.whiteus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950303674553-3t5qrngrvojq1fhnf27u5d1tah4b7okb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_e7MumshAIrGISS6w3294gRla-PAv91A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950303674553-3t5qrngrvojq1fhnf27u5d1tah4b7okb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
