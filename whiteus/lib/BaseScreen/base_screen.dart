@@ -15,7 +15,7 @@ class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    MusicPlayer(path: 'Over_the_Horizon.mp3'), //원래 LocalScreen
+    MusicPlayer(), //원래 LocalScreen
     const ComScreen(),
     Mp3UploaderDownloader(), //이거 수정했음. 원래 StoreScreen
   ];
