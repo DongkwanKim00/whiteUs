@@ -1,3 +1,11 @@
+plugins {
+    id 'com.android.application'
+
+    // Add the Google services Gradle plugin
+    id 'com.google.gms.google-services'
+
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -24,6 +32,8 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+
 
 android {
     compileSdkVersion flutter.compileSdkVersion
@@ -68,13 +78,7 @@ flutter {
     source '../..'
 }
 
-plugins {
-    id 'com.android.application'
 
-    // Add the Google services Gradle plugin
-    id 'com.google.gms.google-services'
-
-}
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -82,3 +86,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     //implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 }
+

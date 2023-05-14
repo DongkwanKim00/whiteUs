@@ -14,7 +14,9 @@
 // }
 
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -39,16 +41,22 @@ class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
 
     // Method to download an mp3 file from the server
     Future<void> downloadMp3() async {
-      final url = 'http://localhost:8000/download'; // Replace with your own download API url
-      final response = await http.get(Uri.parse(url));
-      final bytes = response.bodyBytes;
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File('${dir.path}/downloaded.mp3');
-      await file.writeAsBytes(bytes);
-      setState(() {
-        _filePath = file.path;
-      });
-      print('Mp3 file downloaded successfully');
+      String downloadUrl = "";
+      final FirebaseStorage storage = FirebaseStorage.instance;
+
+      try {
+        String fileName = "Over_the_Horizon.mp3";
+        String filePath = "$fileName";
+        downloadUrl = await storage.ref().child(filePath).getDownloadURL();
+        HttpClient httpClient = HttpClient();
+        HttpClientRequest request = await httpClient.getUrl(Uri.parse(downloadUrl));
+        HttpClientResponse response = await request.close();
+        Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+        File file = File(fileName);
+        await file.writeAsBytes(bytes);
+      } catch (e) {
+        print(e);
+      }
     }
 
     // Method to pick an mp3 file from the device's file system
@@ -68,34 +76,30 @@ class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text('Mp3 Uploader/Downloader'),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await pickMp3();
+
+          },
+          backgroundColor: Colors.blue.shade200,
+          child: const Icon(Icons.add),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  await pickMp3();
-                },
-                child: Text('Upload Mp3'),
+        body: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                await downloadMp3();
+              },
+              child: Text('Download Mp3'),
+            ),
+            if (_filePath.isNotEmpty) ...[
+              SizedBox(height: 16),
+              Text(
+                'Selected Mp3 File Path: $_filePath',
+                style: TextStyle(fontSize: 16),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  await downloadMp3();
-                },
-                child: Text('Download Mp3'),
-              ),
-              if (_filePath.isNotEmpty) ...[
-                SizedBox(height: 16),
-                Text(
-                  'Selected Mp3 File Path: $_filePath',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
             ],
-          ),
+          ],
         ),
       );
     }
