@@ -41,10 +41,7 @@ class NewPost extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
                 onPressed: () async {
-                  await FirebaseFirestore.instance
-                      .collection('test')
-                      .doc("5")
-                      .set({
+                  await FirebaseFirestore.instance.collection('test').add({
                     'name': name,
                     'time':
                         "${DateTime.now().year}년 ${DateTime.now().month}월 ${DateTime.now().day}일",
