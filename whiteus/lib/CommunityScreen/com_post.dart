@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class PostCard extends StatelessWidget {
-  final String nickname;
-  final String contents;
-  const PostCard({super.key, required this.nickname, required this.contents});
+  final String nickname, contents, datetime;
+  const PostCard(
+      {super.key,
+      required this.nickname,
+      required this.contents,
+      required this.datetime});
 
   @override
   Widget build(BuildContext context) {
