@@ -1,4 +1,3 @@
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -10,18 +9,15 @@ class AudioFile {
   AudioFile({required this.name, required this.path});
 }
 
-
 class AudioPlayerPage extends StatefulWidget {
   @override
-
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
 }
 
-// class _AudioPlayerPageState extends State<AudioPlayerPage> {
-class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingObserver {
+class _AudioPlayerPageState extends State<AudioPlayerPage>
+    with WidgetsBindingObserver {
   late AudioPlayer audioPlayer;
   List<AudioFile> audioFiles = [];
-
 
   @override
   void initState() {
@@ -30,9 +26,9 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
     loadAudioFiles();
   }
 
-
   Future<void> loadAudioFiles() async {
-    Directory directory = Directory('/data/user/0/com.example.whiteus/app_flutter/');
+    Directory directory =
+        Directory('/data/user/0/com.example.whiteus/app_flutter/');
     List<FileSystemEntity> files = directory.listSync();
 
     audioFiles.clear();
@@ -46,40 +42,42 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
 
     setState(() {});
   }
-
+  
   void playAudio(String path) async {
-    print(path+"hoho");
-    await audioPlayer.play;
-
+    await audioPlayer.play(UrlSource(path));
   }
 
   void pauseAudio() async {
     await audioPlayer.pause();
   }
 
+  void deleteFile(String path) {
+    File file = File(path);
+    file.deleteSync();
+    loadAudioFiles();
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
       pauseAudio();
     } else if (state == AppLifecycleState.resumed) {
       // Resume audio playback if needed
     }
   }
 
-
   @override
   void dispose() {
     audioPlayer.dispose();
     super.dispose();
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        title: Text('오디오 플레이어'),
+        title: Text('Audio Player'),
       ),
       body: ListView.builder(
         itemCount: audioFiles.length,
@@ -105,17 +103,22 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
                 Expanded(
                   child: Slider(
                     onChanged: (double value) {
-                      // 시간 막대 값 변경 처리
+                      // Handle time bar/slider value change
                     },
                     min: 0.0,
                     max: 100.0,
-                    value: 50.0, // 초기 값을 여기서 설정
+                    value: 50.0, // Set initial value here
                   ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    deleteFile(audioFile.path);
+                  },
                 ),
               ],
             ),
           );
-
         },
       ),
     );
