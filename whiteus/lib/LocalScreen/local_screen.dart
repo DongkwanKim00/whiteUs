@@ -12,6 +12,8 @@ class AudioFile {
 
 
 class AudioPlayerPage extends StatefulWidget {
+  const AudioPlayerPage({super.key});
+
   @override
 
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
@@ -48,9 +50,8 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   }
 
   void playAudio(String path) async {
-    print(path+"hoho");
-    await audioPlayer.play;
-
+   
+    await audioPlayer.play(UrlSource(path));
   }
 
   void pauseAudio() async {
@@ -79,7 +80,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
     return Scaffold(
       appBar: AppBar(
 
-        title: Text('오디오 플레이어'),
+        title: const Text('오디오 플레이어'),
       ),
       body: ListView.builder(
         itemCount: audioFiles.length,
@@ -91,13 +92,13 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
             subtitle: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.play_arrow),
+                  icon: const Icon(Icons.play_arrow),
                   onPressed: () {
                     playAudio(audioFile.path);
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.pause),
+                  icon: const Icon(Icons.pause),
                   onPressed: () {
                     pauseAudio();
                   },
@@ -123,7 +124,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: AudioPlayerPage(),
   ));
 }
