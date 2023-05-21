@@ -10,6 +10,8 @@ class AudioFile {
 }
 
 class AudioPlayerPage extends StatefulWidget {
+  const AudioPlayerPage({super.key});
+
   @override
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
 }
@@ -77,7 +79,9 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Audio Player'),
+
+        title: const Text('오디오 플레이어'),
+
       ),
       body: ListView.builder(
         itemCount: audioFiles.length,
@@ -89,13 +93,13 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
             subtitle: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.play_arrow),
+                  icon: const Icon(Icons.play_arrow),
                   onPressed: () {
                     playAudio(audioFile.path);
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.pause),
+                  icon: const Icon(Icons.pause),
                   onPressed: () {
                     pauseAudio();
                   },
@@ -126,7 +130,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: AudioPlayerPage(),
   ));
 }
