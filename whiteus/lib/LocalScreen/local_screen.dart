@@ -1,141 +1,129 @@
-// import 'package:flutter/material.dart';
-//
-// class LocalScreen extends StatelessWidget {
-//   const LocalScreen({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Container(
-//         child: const Text("Local Screen"),
-//       ),
-//     );
-//   }
-// }
-//
 
-import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
-class MusicPlayer extends StatefulWidget {
-  late String path;
+class AudioFile {
+  String name;
+  String path;
 
-  MusicPlayer({super.key});
-
-  @override
-  _MusicPlayerState createState() => _MusicPlayerState();
+  AudioFile({required this.name, required this.path});
 }
 
-class _MusicPlayerState extends State<MusicPlayer> {
-  AudioPlayer audioPlayer = AudioPlayer();
-  List<FileSystemEntity> _files = [];
 
-  bool isPlaying = false;
-  Duration duration = const Duration();
-  Duration position = const Duration();
+class AudioPlayerPage extends StatefulWidget {
+  @override
+
+  _AudioPlayerPageState createState() => _AudioPlayerPageState();
+}
+
+// class _AudioPlayerPageState extends State<AudioPlayerPage> {
+class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingObserver {
+  late AudioPlayer audioPlayer;
+  List<AudioFile> audioFiles = [];
+
 
   @override
   void initState() {
     super.initState();
-    _loadFiles();
+    audioPlayer = AudioPlayer();
+    loadAudioFiles();
   }
 
-void _loadFiles() async {
-  List<String> assetPaths = <String>[
-    'assets/Over_the_Horizon.mp3'
-    // Add more MP3 file paths as needed
-  ];
 
-  List<File> mp3Files = [];
+  Future<void> loadAudioFiles() async {
+    Directory directory = Directory('/data/user/0/com.example.whiteus/app_flutter/');
+    List<FileSystemEntity> files = directory.listSync();
 
-  for (String assetPath in assetPaths) {
-    ByteData byteData = await rootBundle.load(assetPath);
-    String fileName = assetPath.split('/').last;
+    audioFiles.clear();
 
-    String tempDirPath = (await getTemporaryDirectory()).path;
-    String filePath = '$tempDirPath/$fileName';
+    for (var file in files) {
+      if (file.path.endsWith('.mp3')) {
+        String fileName = file.path.split('/').last;
+        audioFiles.add(AudioFile(name: fileName, path: file.path));
+      }
+    }
 
-    File file = File(filePath);
-    await file.writeAsBytes(byteData.buffer.asUint8List());
-
-    mp3Files.add(file);
+    setState(() {});
   }
 
-  setState(() {
-    _files = mp3Files;
-  });
-}
+  void playAudio(String path) async {
+    print(path+"hoho");
+    await audioPlayer.play;
 
-void _play(String filePath) async {
-  await audioPlayer.setSource(AssetSource('Over_the_Horizon.mp3'));
- 
-}
+  }
 
-
-  void _pause() async {
+  void pauseAudio() async {
     await audioPlayer.pause();
-    setState(() {
-      isPlaying = false;
-    });
   }
 
-  void _stop() async {
-    await audioPlayer.stop();
-    setState(() {
-      isPlaying = false;
-    });
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      pauseAudio();
+    } else if (state == AppLifecycleState.resumed) {
+      // Resume audio playback if needed
+    }
   }
 
-  String _getDurationString(Duration duration) {
-    return duration.toString().split('.').first.padLeft(8, "0");
-  }
 
-  Widget _buildMusicPlayer(BuildContext context, FileSystemEntity file) {
-    return ListTile(
-      leading: const Icon(Icons.music_note),
-      title: Text(file.path.split('/').last),
-      trailing: isPlaying
-          ? IconButton(
-        icon: const Icon(Icons.pause),
-        onPressed: _pause,
-      )
-          : IconButton(
-        icon: const Icon(Icons.play_arrow),
-        onPressed: () => _play(file.path),
-      ),
-      subtitle: Slider(
-        value: position.inSeconds.toDouble(),
-        min: 0.0,
-        max: duration.inSeconds.toDouble(),
-        onChanged: (double value) {
-          setState(() {
-            audioPlayer.seek(Duration(seconds: value.toInt()));
-            value = value;
-          });
-        },
-      ),
-    );
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Music Player'),
+
+        title: Text('오디오 플레이어'),
       ),
-      body: _files.isEmpty
-          ? const Center(
-        child: Text('No MP3 files found.'),
-      )
-          : ListView.builder(
-        itemCount: _files.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildMusicPlayer(context, _files[index]);
+      body: ListView.builder(
+        itemCount: audioFiles.length,
+        itemBuilder: (context, index) {
+          AudioFile audioFile = audioFiles[index];
+
+          return ListTile(
+            title: Text(audioFile.name),
+            subtitle: Row(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.play_arrow),
+                  onPressed: () {
+                    playAudio(audioFile.path);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.pause),
+                  onPressed: () {
+                    pauseAudio();
+                  },
+                ),
+                Expanded(
+                  child: Slider(
+                    onChanged: (double value) {
+                      // 시간 막대 값 변경 처리
+                    },
+                    min: 0.0,
+                    max: 100.0,
+                    value: 50.0, // 초기 값을 여기서 설정
+                  ),
+                ),
+              ],
+            ),
+          );
+
         },
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: AudioPlayerPage(),
+  ));
 }
