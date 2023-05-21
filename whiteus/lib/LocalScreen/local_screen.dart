@@ -14,7 +14,8 @@ class AudioPlayerPage extends StatefulWidget {
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
 }
 
-class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingObserver {
+class _AudioPlayerPageState extends State<AudioPlayerPage>
+    with WidgetsBindingObserver {
   late AudioPlayer audioPlayer;
   List<AudioFile> audioFiles = [];
 
@@ -26,7 +27,8 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   }
 
   Future<void> loadAudioFiles() async {
-    Directory directory = Directory('/data/user/0/com.example.whiteus/app_flutter/');
+    Directory directory =
+        Directory('/data/user/0/com.example.whiteus/app_flutter/');
     List<FileSystemEntity> files = directory.listSync();
 
     audioFiles.clear();
@@ -46,10 +48,8 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   // }
 
   void playAudio(String path) async {
-
     await audioPlayer.play(UrlSource(path));
   }
-
 
   void pauseAudio() async {
     await audioPlayer.pause();
@@ -63,7 +63,8 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
       pauseAudio();
     } else if (state == AppLifecycleState.resumed) {
       // Resume audio playback if needed
@@ -133,4 +134,3 @@ void main() {
     home: AudioPlayerPage(),
   ));
 }
-
