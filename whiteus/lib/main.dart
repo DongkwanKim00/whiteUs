@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'BaseScreen/base_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-void main() async{
-  // => runApp(const MyApp());
+void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       title: _title,
       theme: ThemeData(
@@ -26,34 +29,25 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color.fromRGBO(40, 44, 55, 1),
         scaffoldBackgroundColor: const Color.fromRGBO(30, 34, 45, 1),
         textTheme: const TextTheme(
-          displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.white70),
-          titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic, color: Colors.white70),
-          bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.white70),
+          displayLarge: TextStyle(
+              fontSize: 72.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white70),
+          titleLarge: TextStyle(
+              fontSize: 36.0,
+              fontStyle: FontStyle.italic,
+              color: Colors.white70),
+          bodyMedium: TextStyle(
+              fontSize: 14.0, fontFamily: 'Hind', color: Colors.white70),
         ),
-        colorScheme: const ColorScheme.dark().copyWith(
-          secondary: const Color.fromRGBO(80, 84, 95, 1),
-          onSecondary: Colors.white, // 선택되지 않은 항목의 색상
-        ).copyWith(background: const Color.fromRGBO(55, 48, 107, 1)),
+        colorScheme: const ColorScheme.dark()
+            .copyWith(
+              secondary: const Color.fromRGBO(80, 84, 95, 1),
+              onSecondary: Colors.white, // 선택되지 않은 항목의 색상
+            )
+            .copyWith(background: const Color.fromRGBO(55, 48, 107, 1)),
       ),
       home: const BaseScreen(),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

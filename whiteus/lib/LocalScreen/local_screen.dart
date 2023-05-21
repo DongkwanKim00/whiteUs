@@ -1,3 +1,4 @@
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -9,8 +10,10 @@ class AudioFile {
   AudioFile({required this.name, required this.path});
 }
 
+
 class AudioPlayerPage extends StatefulWidget {
   @override
+
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
 }
 
@@ -19,12 +22,14 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   late AudioPlayer audioPlayer;
   List<AudioFile> audioFiles = [];
 
+
   @override
   void initState() {
     super.initState();
     audioPlayer = AudioPlayer();
     loadAudioFiles();
   }
+
 
   Future<void> loadAudioFiles() async {
     Directory directory = Directory('/data/user/0/com.example.whiteus/app_flutter/');
@@ -45,6 +50,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   void playAudio(String path) async {
     print(path+"hoho");
     await audioPlayer.play;
+
   }
 
   void pauseAudio() async {
@@ -60,16 +66,19 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
     }
   }
 
+
   @override
   void dispose() {
     audioPlayer.dispose();
     super.dispose();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         title: Text('오디오 플레이어'),
       ),
       body: ListView.builder(
@@ -106,6 +115,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
               ],
             ),
           );
+
         },
       ),
     );
