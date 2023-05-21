@@ -42,11 +42,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
 
     setState(() {});
   }
-
-  // void playAudio(String path) async {
-  //   await audioPlayer.play(DeviceFileSource(path));
-  // }
-
+  
   void playAudio(String path) async {
     await audioPlayer.play(UrlSource(path));
   }
