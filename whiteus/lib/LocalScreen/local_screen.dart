@@ -14,7 +14,6 @@ class AudioPlayerPage extends StatefulWidget {
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
 }
 
-// class _AudioPlayerPageState extends State<AudioPlayerPage> {
 class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingObserver {
   late AudioPlayer audioPlayer;
   List<AudioFile> audioFiles = [];
@@ -42,13 +41,24 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
     setState(() {});
   }
 
+  // void playAudio(String path) async {
+  //   await audioPlayer.play(DeviceFileSource(path));
+  // }
+
   void playAudio(String path) async {
-    print(path+"hoho");
-    await audioPlayer.play;
+
+    await audioPlayer.play(UrlSource(path));
   }
+
 
   void pauseAudio() async {
     await audioPlayer.pause();
+  }
+
+  void deleteFile(String path) {
+    File file = File(path);
+    file.deleteSync();
+    loadAudioFiles();
   }
 
   @override
@@ -70,7 +80,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('오디오 플레이어'),
+        title: Text('Audio Player'),
       ),
       body: ListView.builder(
         itemCount: audioFiles.length,
@@ -96,12 +106,18 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
                 Expanded(
                   child: Slider(
                     onChanged: (double value) {
-                      // 시간 막대 값 변경 처리
+                      // Handle time bar/slider value change
                     },
                     min: 0.0,
                     max: 100.0,
-                    value: 50.0, // 초기 값을 여기서 설정
+                    value: 50.0, // Set initial value here
                   ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    deleteFile(audioFile.path);
+                  },
                 ),
               ],
             ),
@@ -117,3 +133,4 @@ void main() {
     home: AudioPlayerPage(),
   ));
 }
+
