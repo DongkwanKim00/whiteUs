@@ -5,8 +5,10 @@ import 'dart:io';
 class AudioFile {
   String name;
   String path;
+  Duration duration=Duration.zero;
 
   AudioFile({required this.name, required this.path});
+
 }
 
 class AudioPlayerPage extends StatefulWidget {
@@ -18,31 +20,38 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
     with WidgetsBindingObserver {
   late AudioPlayer audioPlayer;
   List<AudioFile> audioFiles = [];
+  Duration position = Duration.zero;
 
   @override
   void initState() {
     super.initState();
     audioPlayer = AudioPlayer();
     loadAudioFiles();
+    audioPlayer.onPositionChanged.listen((Duration p) {
+      print('Current position: $p');
+      setState(() => position = p);
+    });
   }
 
   Future<void> loadAudioFiles() async {
     Directory directory =
-        Directory('/data/user/0/com.example.whiteus/app_flutter/');
+    Directory('/data/user/0/com.example.whiteus/app_flutter/');
     List<FileSystemEntity> files = directory.listSync();
 
     audioFiles.clear();
 
     for (var file in files) {
       if (file.path.endsWith('.mp3')) {
-        String fileName = file.path.split('/').last;
+        String fileName = file.path
+            .split('/')
+            .last;
         audioFiles.add(AudioFile(name: fileName, path: file.path));
       }
     }
 
     setState(() {});
   }
-  
+
   void playAudio(String path) async {
     await audioPlayer.play(UrlSource(path));
   }
@@ -102,12 +111,13 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
                 ),
                 Expanded(
                   child: Slider(
+                    value: position.inSeconds.toDouble(),
                     onChanged: (double value) {
                       // Handle time bar/slider value change
+                      audioPlayer.seek(Duration(seconds: value.toInt()));
                     },
                     min: 0.0,
                     max: 100.0,
-                    value: 50.0, // Set initial value here
                   ),
                 ),
                 IconButton(
@@ -123,10 +133,4 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: AudioPlayerPage(),
-  ));
 }
