@@ -1,141 +1,142 @@
-// import 'package:flutter/material.dart';
-//
-// class LocalScreen extends StatelessWidget {
-//   const LocalScreen({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Container(
-//         child: const Text("Local Screen"),
-//       ),
-//     );
-//   }
-// }
-//
-
-import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
-class MusicPlayer extends StatefulWidget {
-  late String path;
+class AudioFile {
+  String name;
+  String path;
+  Duration duration=Duration.zero;
 
-  MusicPlayer({super.key});
+  AudioFile({required this.name, required this.path});
 
-  @override
-  _MusicPlayerState createState() => _MusicPlayerState();
 }
 
-class _MusicPlayerState extends State<MusicPlayer> {
-  AudioPlayer audioPlayer = AudioPlayer();
-  List<FileSystemEntity> _files = [];
+class AudioPlayerPage extends StatefulWidget {
+  const AudioPlayerPage({super.key});
 
-  bool isPlaying = false;
-  Duration duration = const Duration();
-  Duration position = const Duration();
+  @override
+  _AudioPlayerPageState createState() => _AudioPlayerPageState();
+}
+
+class _AudioPlayerPageState extends State<AudioPlayerPage>
+    with WidgetsBindingObserver {
+  late AudioPlayer audioPlayer;
+  List<AudioFile> audioFiles = [];
+  Duration position = Duration.zero;
 
   @override
   void initState() {
     super.initState();
-    _loadFiles();
+    audioPlayer = AudioPlayer();
+    loadAudioFiles();
+    audioPlayer.onPositionChanged.listen((Duration p) {
+      print('Current position: $p');
+      setState(() => position = p);
+    });
   }
 
-void _loadFiles() async {
-  List<String> assetPaths = <String>[
-    'assets/Over_the_Horizon.mp3'
-    // Add more MP3 file paths as needed
-  ];
+  Future<void> loadAudioFiles() async {
+    Directory directory =
+    Directory('/data/user/0/com.example.whiteus/app_flutter/');
+    List<FileSystemEntity> files = directory.listSync();
 
-  List<File> mp3Files = [];
+    audioFiles.clear();
 
-  for (String assetPath in assetPaths) {
-    ByteData byteData = await rootBundle.load(assetPath);
-    String fileName = assetPath.split('/').last;
+    for (var file in files) {
+      if (file.path.endsWith('.mp3')) {
+        String fileName = file.path
+            .split('/')
+            .last;
+        audioFiles.add(AudioFile(name: fileName, path: file.path));
+      }
+    }
 
-    String tempDirPath = (await getTemporaryDirectory()).path;
-    String filePath = '$tempDirPath/$fileName';
-
-    File file = File(filePath);
-    await file.writeAsBytes(byteData.buffer.asUint8List());
-
-    mp3Files.add(file);
+    setState(() {});
   }
 
-  setState(() {
-    _files = mp3Files;
-  });
-}
+  void playAudio(String path) async {
+    await audioPlayer.play(UrlSource(path));
+  }
 
-void _play(String filePath) async {
-  await audioPlayer.setSource(AssetSource('Over_the_Horizon.mp3'));
- 
-}
-
-
-  void _pause() async {
+  void pauseAudio() async {
     await audioPlayer.pause();
-    setState(() {
-      isPlaying = false;
-    });
   }
 
-  void _stop() async {
-    await audioPlayer.stop();
-    setState(() {
-      isPlaying = false;
-    });
+  void deleteFile(String path) {
+    File file = File(path);
+    file.deleteSync();
+    loadAudioFiles();
   }
 
-  String _getDurationString(Duration duration) {
-    return duration.toString().split('.').first.padLeft(8, "0");
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      pauseAudio();
+    } else if (state == AppLifecycleState.resumed) {
+      // Resume audio playback if needed
+    }
   }
 
-  Widget _buildMusicPlayer(BuildContext context, FileSystemEntity file) {
-    return ListTile(
-      leading: const Icon(Icons.music_note),
-      title: Text(file.path.split('/').last),
-      trailing: isPlaying
-          ? IconButton(
-        icon: const Icon(Icons.pause),
-        onPressed: _pause,
-      )
-          : IconButton(
-        icon: const Icon(Icons.play_arrow),
-        onPressed: () => _play(file.path),
-      ),
-      subtitle: Slider(
-        value: position.inSeconds.toDouble(),
-        min: 0.0,
-        max: duration.inSeconds.toDouble(),
-        onChanged: (double value) {
-          setState(() {
-            audioPlayer.seek(Duration(seconds: value.toInt()));
-            value = value;
-          });
-        },
-      ),
-    );
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Music Player'),
+
+        title: const Text('오디오 플레이어'),
+
       ),
-      body: _files.isEmpty
-          ? const Center(
-        child: Text('No MP3 files found.'),
-      )
-          : ListView.builder(
-        itemCount: _files.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildMusicPlayer(context, _files[index]);
+      body: ListView.builder(
+        itemCount: audioFiles.length,
+        itemBuilder: (context, index) {
+          AudioFile audioFile = audioFiles[index];
+
+          return ListTile(
+            title: Text(audioFile.name),
+            subtitle: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.play_arrow),
+                  onPressed: () {
+                    playAudio(audioFile.path);
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.pause),
+                  onPressed: () {
+                    pauseAudio();
+                  },
+                ),
+                Expanded(
+                  child: Slider(
+                    value: position.inSeconds.toDouble(),
+                    onChanged: (double value) {
+                      // Handle time bar/slider value change
+                      audioPlayer.seek(Duration(seconds: value.toInt()));
+                    },
+                    min: 0.0,
+                    max: 100.0,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    deleteFile(audioFile.path);
+                  },
+                ),
+              ],
+            ),
+          );
         },
       ),
     );
   }
+
 }
+

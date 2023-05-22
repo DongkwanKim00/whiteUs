@@ -44,7 +44,7 @@ dependencies:
   firebase_core: ^2.12.0
   cloud_firestore: ^4.7.0
   firebase_storage: ^11.2.0
-
+  path_provider_ex2: ^2.0.12
 
 
 
@@ -83,6 +83,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/HomeScreen/image/
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
