@@ -23,7 +23,7 @@ class _ComLoginState extends State<ComLogin> {
         if (log == true) {
           setState(() {
             isLogin = true;
-            nickName = nick;
+            CommunityMain.nickName = nick;
           });
         }
       }
@@ -42,11 +42,7 @@ class _ComLoginState extends State<ComLogin> {
 
   @override
   Widget build(BuildContext context) {
-    return isLogin
-        ? CommunityMain(
-            nickName: nickName,
-          )
-        : comLogin();
+    return isLogin ? const CommunityMain() : comLogin();
   }
 
   Center comLogin() {
