@@ -41,11 +41,13 @@ class NewPost extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
                 onPressed: () async {
-                  await FirebaseFirestore.instance.collection('test').add({
+                  await FirebaseFirestore.instance.collection('Community').add({
                     'name': name,
                     'time':
                         "${DateTime.now().year}년 ${DateTime.now().month}월 ${DateTime.now().day}일",
-                    'contents': textController.text
+                    'contents': textController.text,
+                    'recommendNum': 0,
+                    'recommendList': <String>[],
                   });
                   Navigator.pop(context);
                 },
