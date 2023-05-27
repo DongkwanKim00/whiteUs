@@ -34,14 +34,31 @@ PageView makePageView(List<String> imageTitle, List<String> imagePath) {
     itemBuilder: (context, index) {
       return GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CardScreen(
+          Widget screen;
+          switch (imageTitle[index]) {
+            case 'Baby':
+              screen = const BabyScreen();
+              break;
+            case 'Study':
+              screen = const StudyScreen();
+              break;
+            case 'Sleep':
+              screen = const SleepScreen();
+              break;
+            case 'Meditation':
+              screen = const MeditationScreen();
+              break;
+            default:
+              screen = CardScreen(
                 title: imageTitle[index],
                 image: imagePath[index],
                 id: index.toString(),
-              ),
+              );
+          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => screen,
               fullscreenDialog: true,
             ),
           );
@@ -61,7 +78,7 @@ PageView makePageView(List<String> imageTitle, List<String> imagePath) {
                       blurRadius: 15,
                       offset: const Offset(10, 10),
                       color: Colors.black.withOpacity(0.3),
-                    )
+                    ),
                   ],
                 ),
                 child: Image.asset(imagePath[index]),
@@ -80,3 +97,4 @@ PageView makePageView(List<String> imageTitle, List<String> imagePath) {
     },
   );
 }
+
