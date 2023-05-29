@@ -23,11 +23,32 @@ class AudioPlayerPage extends StatefulWidget {
 class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingObserver {
   List<AudioFile> audioFiles = [];
   Timer? positionTimer;
+  AudioPlayer? currentAudioPlayer;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
     loadAudioFiles();
+  }
+
+  @override
+  void dispose() {
+    stopPositionTimer();
+    for (var audioFile in audioFiles) {
+      audioFile.audioPlayer.dispose();
+    }
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      if (currentAudioPlayer != null) {
+        pauseAudio(currentAudioPlayer!);
+      }
+    }
   }
 
   Future<void> loadAudioFiles() async {
@@ -56,12 +77,14 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
 
   void playAudio(AudioPlayer audioPlayer, String path) async {
     await audioPlayer.play(UrlSource(path));
+    currentAudioPlayer = audioPlayer;
     startPositionTimer(audioPlayer);
   }
 
   void pauseAudio(AudioPlayer audioPlayer) async {
     await audioPlayer.pause();
     stopPositionTimer();
+    currentAudioPlayer = null;
   }
 
   void seekAudio(AudioPlayer audioPlayer, Duration duration) async {
@@ -90,15 +113,6 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   void stopPositionTimer() {
     positionTimer?.cancel();
     positionTimer = null;
-  }
-
-  @override
-  void dispose() {
-    stopPositionTimer();
-    // for (var audioFile in audioFiles) {
-    //   audioFile.audioPlayer.dispose();
-    // }
-    super.dispose();
   }
 
   @override
