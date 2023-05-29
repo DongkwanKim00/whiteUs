@@ -32,7 +32,7 @@ class _PostCardState extends State<PostCard> {
               .doc(widget.id)
               .update({
             "recommendNum": widget.recommendNum - 1,
-            "recommendList": FieldValue.arrayRemove([widget.nickname])
+            "recommendList": FieldValue.arrayRemove([CommunityMain.nickName])
           });
         });
       },
@@ -51,7 +51,7 @@ class _PostCardState extends State<PostCard> {
                 .doc(widget.id)
                 .update({
               "recommendNum": widget.recommendNum + 1,
-              "recommendList": FieldValue.arrayUnion([widget.nickname])
+              "recommendList": FieldValue.arrayUnion([CommunityMain.nickName])
             });
           });
         },
@@ -88,8 +88,7 @@ class _PostCardState extends State<PostCard> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                    "${DateTime.now().year}년 ${DateTime.now().month}월 ${DateTime.now().day}일"),
+                Text(widget.datetime),
                 Text(widget.nickname),
                 const SizedBox(
                   width: 30,
