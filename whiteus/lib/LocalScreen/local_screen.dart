@@ -5,7 +5,6 @@ import 'dart:io';
 class AudioFile {
   String name;
   String path;
-  Duration duration = Duration.zero;
 
   AudioFile({required this.name, required this.path});
 }
@@ -19,7 +18,7 @@ class AudioPlayerPage extends StatefulWidget {
 
 class _AudioPlayerPageState extends State<AudioPlayerPage>
     with WidgetsBindingObserver {
-  static const defaultPlayerCount = 1;  // 상수로 선언
+  static const defaultPlayerCount = 1; // 상수로 선언
   List<AudioPlayer> audioPlayers = List.generate(
     defaultPlayerCount,
     (_) => AudioPlayer()..setReleaseMode(ReleaseMode.stop),
@@ -28,16 +27,11 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
 
   AudioPlayer get selectedAudioPlayer => audioPlayers[selectedPlayerIdx];
   List<AudioFile> audioFiles = [];
-  Duration position = Duration.zero;
 
   @override
   void initState() {
     super.initState();
     loadAudioFiles();
-    audioPlayer.onPositionChanged.listen((Duration p) {
-      print('Current position: $p');
-      setState(() => position = p);
-    });
   }
 
   Future<void> loadAudioFiles() async {
@@ -54,7 +48,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
       }
     }
 
-    if(mounted) {
+    if (mounted) {
       setState(() {});
     }
   }
@@ -121,13 +115,12 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
                 ),
                 Expanded(
                   child: Slider(
-                    value: position.inSeconds.toDouble(),
                     onChanged: (double value) {
                       // Handle time bar/slider value change
-                      audioPlayer.seek(Duration(seconds: value.toInt()));
                     },
                     min: 0.0,
                     max: 100.0,
+                    value: 50.0, // Set initial value here
                   ),
                 ),
                 IconButton(
