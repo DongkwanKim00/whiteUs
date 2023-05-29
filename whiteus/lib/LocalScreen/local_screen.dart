@@ -1,32 +1,28 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:io';
 
 class AudioFile {
   String name;
   String path;
+  AudioPlayer audioPlayer;
+  Duration totalDuration = Duration.zero;
+  Duration currentPosition = Duration.zero;
 
-  AudioFile({required this.name, required this.path});
+  AudioFile({required this.name, required this.path, required this.audioPlayer});
 }
 
 class AudioPlayerPage extends StatefulWidget {
-  const AudioPlayerPage({super.key});
+  const AudioPlayerPage({Key? key}) : super(key: key);
 
   @override
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
 }
 
-class _AudioPlayerPageState extends State<AudioPlayerPage>
-    with WidgetsBindingObserver {
-  static const defaultPlayerCount = 1; // 상수로 선언
-  List<AudioPlayer> audioPlayers = List.generate(
-    defaultPlayerCount,
-    (_) => AudioPlayer()..setReleaseMode(ReleaseMode.stop),
-  );
-  int selectedPlayerIdx = 0;
-
-  AudioPlayer get selectedAudioPlayer => audioPlayers[selectedPlayerIdx];
+class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingObserver {
   List<AudioFile> audioFiles = [];
+  Timer? positionTimer;
 
   @override
   void initState() {
@@ -35,8 +31,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
   }
 
   Future<void> loadAudioFiles() async {
-    Directory directory =
-        Directory('/data/user/0/com.example.whiteus/app_flutter/');
+    Directory directory = Directory('/data/user/0/com.example.whiteus/app_flutter/');
     List<FileSystemEntity> files = directory.listSync();
 
     audioFiles.clear();
@@ -44,21 +39,33 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
     for (var file in files) {
       if (file.path.endsWith('.mp3')) {
         String fileName = file.path.split('/').last;
-        audioFiles.add(AudioFile(name: fileName, path: file.path));
+        AudioPlayer audioPlayer = AudioPlayer()..setReleaseMode(ReleaseMode.stop);
+
+        audioPlayer.onDurationChanged.listen((Duration d) {
+          setState(() {
+            audioFiles.firstWhere((element) => element.audioPlayer == audioPlayer).totalDuration = d;
+          });
+        });
+
+        audioFiles.add(AudioFile(name: fileName, path: file.path, audioPlayer: audioPlayer));
       }
     }
 
-    if (mounted) {
-      setState(() {});
-    }
+    setState(() {});
   }
 
-  void playAudio(String path) async {
-    await selectedAudioPlayer.play(UrlSource(path));
+  void playAudio(AudioPlayer audioPlayer, String path) async {
+    await audioPlayer.play(UrlSource(path));
+    startPositionTimer(audioPlayer);
   }
 
-  void pauseAudio() async {
-    await selectedAudioPlayer.pause();
+  void pauseAudio(AudioPlayer audioPlayer) async {
+    await audioPlayer.pause();
+    stopPositionTimer();
+  }
+
+  void seekAudio(AudioPlayer audioPlayer, Duration duration) async {
+    await audioPlayer.seek(duration);
   }
 
   void deleteFile(String path) {
@@ -68,20 +75,28 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
     });
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused) {
-      pauseAudio();
-    } else if (state == AppLifecycleState.resumed) {
-      // Resume audio playback if needed
-    }
+  void startPositionTimer(AudioPlayer audioPlayer) {
+    positionTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      audioPlayer.getCurrentPosition().then((Duration? position) {
+        if (position != null) {
+          setState(() {
+            audioFiles.firstWhere((element) => element.audioPlayer == audioPlayer).currentPosition = position;
+          });
+        }
+      });
+    });
+  }
+
+  void stopPositionTimer() {
+    positionTimer?.cancel();
+    positionTimer = null;
   }
 
   @override
   void dispose() {
-    // for (var player in audioPlayers) {
-    //   player.dispose();
+    stopPositionTimer();
+    // for (var audioFile in audioFiles) {
+    //   audioFile.audioPlayer.dispose();
     // }
     super.dispose();
   }
@@ -104,23 +119,26 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
                 IconButton(
                   icon: const Icon(Icons.play_arrow),
                   onPressed: () {
-                    playAudio(audioFile.path);
+                    playAudio(audioFile.audioPlayer, audioFile.path);
                   },
                 ),
                 IconButton(
                   icon: const Icon(Icons.pause),
                   onPressed: () {
-                    pauseAudio();
+                    pauseAudio(audioFile.audioPlayer);
                   },
                 ),
                 Expanded(
                   child: Slider(
                     onChanged: (double value) {
-                      // Handle time bar/slider value change
+                      int millis = (audioFile.totalDuration.inMilliseconds * value).round();
+                      seekAudio(audioFile.audioPlayer, Duration(milliseconds: millis));
                     },
                     min: 0.0,
-                    max: 100.0,
-                    value: 50.0, // Set initial value here
+                    max: 1.0,
+                    value: audioFile.totalDuration.inMilliseconds > 0
+                        ? audioFile.currentPosition.inMilliseconds / audioFile.totalDuration.inMilliseconds
+                        : 0.0,
                   ),
                 ),
                 IconButton(
