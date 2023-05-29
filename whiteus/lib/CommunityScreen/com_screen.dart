@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'com_login.dart';
+import 'package:whiteus/CommunityScreen/com_main.dart';
 
 class ComScreen extends StatefulWidget {
   const ComScreen({super.key});
@@ -12,7 +12,7 @@ class _ComScreenState extends State<ComScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: ComLogin(),
+      body: CommunityMain(),
     );
   }
 }

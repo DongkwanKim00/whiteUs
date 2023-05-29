@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'BaseScreen/base_screen.dart';
+import 'package:whiteus/login.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
             )
             .copyWith(background: const Color.fromRGBO(55, 48, 107, 1)),
       ),
-      home: const BaseScreen(),
+      home: const Login(),
     );
   }
 }
