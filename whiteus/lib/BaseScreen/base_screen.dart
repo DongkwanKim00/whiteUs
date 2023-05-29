@@ -89,18 +89,70 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const HighLightedText(
-          'WHITE US',
-          color:Colors.white,
-          fontSize:20,
+        title: new Text(
+          "WHITE US",
+          style: new TextStyle(
+            fontWeight: FontWeight.w900,
+            fontFamily: 'Handwriting',
+            fontSize:60,
+          ),
         ),
         centerTitle: true,
+        // App bar gradient 효과 추가(형권)
+        flexibleSpace: new Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                Color(0Xff7474BF),
+                Color(0Xff348AC7),
+
+              ],
+            ),
+          ),
+        ),
         backgroundColor: Colors.transparent, //투명으로 바꿈.
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child:Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin:Alignment.topRight,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0Xff348AC7),
+                Color(0Xff7474BF),
+              ]
+            )
+          ),
+          child: _widgetOptions.elementAt(_selectedIndex),
+        )
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: _createBottomNavigationBar(),
+    );
+  }
+
+  // bottom navigation bar도 gradient효과 주려고 분리함(형권)
+  Widget _createBottomNavigationBar(){
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0Xff7474BF),
+            Color(0Xff348AC7),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.topRight,
+          stops: [0.0, 0.8],
+          tileMode: TileMode.clamp,
+        ),
+      ),
+
+        child: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -123,7 +175,12 @@ class _BaseScreenState extends State<BaseScreen> {
         currentIndex: _selectedIndex,
         backgroundColor: Colors.transparent, //투명한게 깔끔해서 바꿈.
         onTap: _onItemTapped,
-      ),
+        selectedIconTheme: IconThemeData(color: Colors.amberAccent),
+        unselectedIconTheme: IconThemeData(color: Colors.white),
+      )
     );
   }
+
+
+
 }

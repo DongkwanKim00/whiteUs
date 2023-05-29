@@ -129,3 +129,12 @@ flutter:
           weight: 200
         - asset: assets/fonts/SUIT-Thin.otf
           weight: 100
+    - family: Handwriting
+      fonts:
+        - asset: assets/fonts/Handwriting.ttf
+
+
+
+
+
+

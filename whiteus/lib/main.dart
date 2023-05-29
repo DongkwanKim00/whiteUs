@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: const Color.fromRGBO(40, 44, 55, 1),
-        scaffoldBackgroundColor: const Color.fromRGBO(30, 34, 45, 1),
+        //이게 배경임
+        scaffoldBackgroundColor: const Color.fromRGBO(14, 14, 15, 0),
         fontFamily: "SUIT", //suit 폰트 적용(형권)
         textTheme: const TextTheme(
           displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.white70),
@@ -30,6 +31,8 @@ class MyApp extends StatelessWidget {
       ),
       home: const BaseScreen(),
     );
+
+
   }
 }
 
