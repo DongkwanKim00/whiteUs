@@ -5,10 +5,9 @@ import 'dart:io';
 class AudioFile {
   String name;
   String path;
-  Duration duration=Duration.zero;
+  Duration duration = Duration.zero;
 
   AudioFile({required this.name, required this.path});
-
 }
 
 class AudioPlayerPage extends StatefulWidget {
@@ -37,16 +36,14 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
 
   Future<void> loadAudioFiles() async {
     Directory directory =
-    Directory('/data/user/0/com.example.whiteus/app_flutter/');
+        Directory('/data/user/0/com.example.whiteus/app_flutter/');
     List<FileSystemEntity> files = directory.listSync();
 
     audioFiles.clear();
 
     for (var file in files) {
       if (file.path.endsWith('.mp3')) {
-        String fileName = file.path
-            .split('/')
-            .last;
+        String fileName = file.path.split('/').last;
         audioFiles.add(AudioFile(name: fileName, path: file.path));
       }
     }
@@ -88,9 +85,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         title: const Text('오디오 플레이어'),
-
       ),
       body: ListView.builder(
         itemCount: audioFiles.length,
@@ -125,7 +120,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () {
                     deleteFile(audioFile.path);
                   },
@@ -137,6 +132,4 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
       ),
     );
   }
-
 }
-

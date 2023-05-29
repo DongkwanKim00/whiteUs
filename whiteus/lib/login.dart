@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'com_main.dart';
+import 'package:whiteus/BaseScreen/base_screen.dart';
+import 'CommunityScreen/com_main.dart';
 
-class ComLogin extends StatefulWidget {
-  const ComLogin({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
   @override
-  State<ComLogin> createState() => _ComLoginState();
+  State<Login> createState() => _LoginState();
 }
 
-class _ComLoginState extends State<ComLogin> {
+class _LoginState extends State<Login> {
   late final SharedPreferences prefs;
   String nickName = "";
   bool isLogin = true;
@@ -42,10 +43,10 @@ class _ComLoginState extends State<ComLogin> {
 
   @override
   Widget build(BuildContext context) {
-    return isLogin ? const CommunityMain() : comLogin();
+    return isLogin ? const BaseScreen() : const Login();
   }
 
-  Center comLogin() {
+  Center login() {
     final textController = TextEditingController();
 
     return Center(
