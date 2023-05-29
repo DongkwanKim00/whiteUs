@@ -1,29 +1,25 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path_provider_ex2/path_provider_ex2.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class Mp3UploaderDownloader extends StatefulWidget {
+  const Mp3UploaderDownloader({super.key});
+
   @override
   _Mp3UploaderDownloaderState createState() => _Mp3UploaderDownloaderState();
 }
 
 class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
-  String _filePath = '';
+  //final String _filePath = '';
 
-  final Reference storageRef =
-      FirebaseStorage.instance.ref('').child('');
+  final Reference storageRef = FirebaseStorage.instance.ref('').child('');
   List<String> titles = [];
 
   // Method to upload an mp3 file to the server
   Future<void> uploadMp3(File file, String fileName) async {
-    FirebaseStorage.instance.ref('$fileName').putFile(file);
+    FirebaseStorage.instance.ref(fileName).putFile(file);
   }
 
   @override
@@ -61,7 +57,6 @@ class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
     }
   }
 
-
   // Method to pick an mp3 file from the device's file system
   Future<void> pickMp3() async {
     FilePickerResult? result = await FilePicker.platform
@@ -83,7 +78,6 @@ class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
         backgroundColor: Colors.blue.shade200,
         child: const Icon(Icons.add),
       ),
-
       body: ListView.builder(
         itemCount: titles.length,
         itemBuilder: (BuildContext context, int index) {
@@ -91,7 +85,7 @@ class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
           return ListTile(
             title: Text(title),
             trailing: IconButton(
-              icon: Icon(Icons.download),
+              icon: const Icon(Icons.download),
               onPressed: () => _downloadFile(title),
             ),
           );
