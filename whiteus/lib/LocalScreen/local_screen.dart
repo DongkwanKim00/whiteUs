@@ -18,13 +18,19 @@ class AudioPlayerPage extends StatefulWidget {
 
 class _AudioPlayerPageState extends State<AudioPlayerPage>
     with WidgetsBindingObserver {
-  late AudioPlayer audioPlayer;
+  static const defaultPlayerCount = 1;  // 상수로 선언
+  List<AudioPlayer> audioPlayers = List.generate(
+    defaultPlayerCount,
+    (_) => AudioPlayer()..setReleaseMode(ReleaseMode.stop),
+  );
+  int selectedPlayerIdx = 0;
+
+  AudioPlayer get selectedAudioPlayer => audioPlayers[selectedPlayerIdx];
   List<AudioFile> audioFiles = [];
 
   @override
   void initState() {
     super.initState();
-    audioPlayer = AudioPlayer();
     loadAudioFiles();
   }
 
@@ -42,21 +48,24 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
       }
     }
 
-    setState(() {});
+    if(mounted) {
+      setState(() {});
+    }
   }
   
   void playAudio(String path) async {
-    await audioPlayer.play(UrlSource(path));
+    await selectedAudioPlayer.play(UrlSource(path));
   }
 
   void pauseAudio() async {
-    await audioPlayer.pause();
+    await selectedAudioPlayer.pause();
   }
 
   void deleteFile(String path) {
     File file = File(path);
-    file.deleteSync();
-    loadAudioFiles();
+    file.delete().then((_) {
+      loadAudioFiles();
+    });
   }
 
   @override
@@ -71,7 +80,9 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
 
   @override
   void dispose() {
-    audioPlayer.dispose();
+    // for (var player in audioPlayers) {
+    //   player.dispose();
+    // }
     super.dispose();
   }
 
@@ -79,9 +90,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         title: const Text('오디오 플레이어'),
-
       ),
       body: ListView.builder(
         itemCount: audioFiles.length,
@@ -115,7 +124,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () {
                     deleteFile(audioFile.path);
                   },
@@ -127,10 +136,4 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: AudioPlayerPage(),
-  ));
 }

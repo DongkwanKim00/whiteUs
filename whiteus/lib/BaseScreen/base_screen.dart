@@ -16,6 +16,7 @@ class _BaseScreenState extends State<BaseScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
 
+    // ignore: prefer_const_constructors
     AudioPlayerPage(),
 
     const ComScreen(),
