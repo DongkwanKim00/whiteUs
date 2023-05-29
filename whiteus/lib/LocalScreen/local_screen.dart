@@ -95,9 +95,9 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   @override
   void dispose() {
     stopPositionTimer();
-    for (var audioFile in audioFiles) {
-      audioFile.audioPlayer.dispose();
-    }
+    // for (var audioFile in audioFiles) {
+    //   audioFile.audioPlayer.dispose();
+    // }
     super.dispose();
   }
 
