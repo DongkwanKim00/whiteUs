@@ -16,10 +16,10 @@ class _BaseScreenState extends State<BaseScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
 
-    AudioPlayerPage(),
+    const AudioPlayerPage(),
 
     const ComScreen(),
-    Mp3UploaderDownloader(), //이거 수정했음. 원래 StoreScreen
+    const Mp3UploaderDownloader(), //이거 수정했음. 원래 StoreScreen
   ];
 
   void _onItemTapped(int index) {
