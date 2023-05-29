@@ -19,14 +19,20 @@ class AudioPlayerPage extends StatefulWidget {
 
 class _AudioPlayerPageState extends State<AudioPlayerPage>
     with WidgetsBindingObserver {
-  late AudioPlayer audioPlayer;
+  static const defaultPlayerCount = 1;  // 상수로 선언
+  List<AudioPlayer> audioPlayers = List.generate(
+    defaultPlayerCount,
+    (_) => AudioPlayer()..setReleaseMode(ReleaseMode.stop),
+  );
+  int selectedPlayerIdx = 0;
+
+  AudioPlayer get selectedAudioPlayer => audioPlayers[selectedPlayerIdx];
   List<AudioFile> audioFiles = [];
   Duration position = Duration.zero;
 
   @override
   void initState() {
     super.initState();
-    audioPlayer = AudioPlayer();
     loadAudioFiles();
     audioPlayer.onPositionChanged.listen((Duration p) {
       print('Current position: $p');
@@ -48,21 +54,24 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
       }
     }
 
-    setState(() {});
+    if(mounted) {
+      setState(() {});
+    }
   }
 
   void playAudio(String path) async {
-    await audioPlayer.play(UrlSource(path));
+    await selectedAudioPlayer.play(UrlSource(path));
   }
 
   void pauseAudio() async {
-    await audioPlayer.pause();
+    await selectedAudioPlayer.pause();
   }
 
   void deleteFile(String path) {
     File file = File(path);
-    file.deleteSync();
-    loadAudioFiles();
+    file.delete().then((_) {
+      loadAudioFiles();
+    });
   }
 
   @override
@@ -77,7 +86,9 @@ class _AudioPlayerPageState extends State<AudioPlayerPage>
 
   @override
   void dispose() {
-    audioPlayer.dispose();
+    // for (var player in audioPlayers) {
+    //   player.dispose();
+    // }
     super.dispose();
   }
 
