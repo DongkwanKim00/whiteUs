@@ -1,15 +1,17 @@
-# whiteUs
-# test
-# asdfasdfasdfasdf
+# WhiteUs
 
-# 내 브런치에만 커밋 하고 싶다
-# 이제 잘 되나??
+## **Language**
+<img src="https://github.com/DongkwanKim00/whiteUs/assets/112566149/43ee46ec-0bc5-4efe-bd9d-392125f99ceb" width="30%"/>
+<img src="https://github.com/DongkwanKim00/whiteUs/assets/112566149/d2220179-4d00-41fd-b8c8-d34fca0e6be1" width="30%"/>
 
-#5/6 하루종일 열 38~39도 나죽네
+***
+## **White Noise?**
+<img src="https://github.com/DongkwanKim00/whiteUs/assets/112566149/2e621b1c-c988-4bc3-875d-b7e591d8267a"/>
 
-왜 안돼
-파이어베이스 왜안돼농ㄴ다ㅐㄴ왬노애ㅗ대뫠옴내ㅗㅇ
-살려줘ㅓㅓㅓㅓㅓㅓㅓㅓ
-
-## **으쌰으쌰 진전이 있군요!**
-_모두들 파이팅_ `파이팅!`
+***
+## **Member Information & Role**<br>
+* _201935015 Kim Dongkwan_ `Role: `
+* _2019_ `Role: `
+* _2019_ `Role: `
+* _2019_ `Role: `
+* _2019_ `Role: `
