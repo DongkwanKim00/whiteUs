@@ -7,7 +7,7 @@
 
 ***
 ## **White Noise?**
-<img src="https://github.com/DongkwanKim00/whiteUs/assets/112566149/2e621b1c-c988-4bc3-875d-b7e591d8267a"/>
+<img src="https://github.com/DongkwanKim00/whiteUs/assets/112566149/3d056c2e-81a5-4cfe-97ba-d44d30e0cb0a"/>
 
 ***
 ## **Member Information & Role**<br>
