@@ -5,24 +5,26 @@ import 'package:whiteus/CommunityScreen/com_main.dart';
 class PostCard extends StatefulWidget {
   final String id, nickname, contents, datetime;
   final int recommendNum;
+
   const PostCard({
-    super.key,
+    Key? key,
     required this.id,
     required this.nickname,
     required this.contents,
     required this.datetime,
     required this.recommendNum,
-  });
+  }) : super(key: key);
 
   @override
   State<PostCard> createState() => _PostCardState();
 }
 
 class _PostCardState extends State<PostCard> {
-  late final IconButton _recBtn, _notRecBtn;
+  late final IconButton _recBtn;
+  late final IconButton _notRecBtn;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     _recBtn = IconButton(
       onPressed: () {
@@ -37,37 +39,38 @@ class _PostCardState extends State<PostCard> {
         });
       },
       icon: const Icon(
-        Icons.recommend_outlined,
+        Icons.thumb_up,
         size: 20,
         color: Colors.green,
       ),
     );
 
     _notRecBtn = IconButton(
-        onPressed: () {
-          setState(() {
-            FirebaseFirestore.instance
-                .collection('Community')
-                .doc(widget.id)
-                .update({
-              "recommendNum": widget.recommendNum + 1,
-              "recommendList": FieldValue.arrayUnion([CommunityMain.nickName])
-            });
+      onPressed: () {
+        setState(() {
+          FirebaseFirestore.instance
+              .collection('Community')
+              .doc(widget.id)
+              .update({
+            "recommendNum": widget.recommendNum + 1,
+            "recommendList": FieldValue.arrayUnion([CommunityMain.nickName])
           });
-        },
-        icon: const Icon(
-          Icons.recommend_outlined,
-          size: 20,
-        ));
+        });
+      },
+      icon: const Icon(
+        Icons.thumb_up_outlined,
+        size: 20,
+      ),
+    );
   }
 
-  Future<bool> _returnIconBtn() async {
-    dynamic nameList = await FirebaseFirestore.instance
+  Future<bool> _checkIfRecommended() async {
+    final nameList = await FirebaseFirestore.instance
         .collection('Community')
         .doc(widget.id)
         .get();
 
-    if (nameList.data()['recommendList'].contains(CommunityMain.nickName)) {
+    if (nameList.data()!['recommendList'].contains(CommunityMain.nickName)) {
       return true;
     } else {
       return false;
@@ -77,54 +80,105 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade400,
+            offset: Offset(0, 2),
+            blurRadius: 4,
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            color: Colors.blueGrey.shade300,
             height: 30,
+            color: Colors.indigoAccent,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.datetime),
-                Text(widget.nickname),
-                const SizedBox(
-                  width: 30,
+                Row(
+                  children: [
+                    Text(
+                      widget.datetime,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '작성자:',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      widget.nickname,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   children: [
                     FutureBuilder(
-                        future: _returnIconBtn(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return _notRecBtn;
-                          } else if (snapshot.hasError) {
-                            return const Text('?');
+                      future: _checkIfRecommended(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return _notRecBtn;
+                        } else if (snapshot.hasError) {
+                          return const Text('?');
+                        } else {
+                          if (snapshot.data == true) {
+                            return _recBtn;
                           } else {
-                            if (snapshot.data == true) {
-                              return _recBtn;
-                            } else {
-                              return _notRecBtn;
-                            }
+                            return _notRecBtn;
                           }
-                        }),
-                    Text("${widget.recommendNum}"),
+                        }
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "${widget.recommendNum}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
+          const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.all(5),
-            color: Colors.white70,
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: Text(
               widget.contents,
-              style: const TextStyle(color: Colors.black, fontSize: 16),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

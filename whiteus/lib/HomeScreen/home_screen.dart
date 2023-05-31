@@ -6,10 +6,10 @@ class HomeScreen extends StatelessWidget {
 
   final List<String> imageTitle = ["Baby", "Study", "Sleep", "Meditation"];
   final List<String> imagePath = [
-    "lib/HomeScreen/image/baby.jpg",
-    "lib/HomeScreen/image/study.jpg",
-    "lib/HomeScreen/image/sleep.jpg",
-    "lib/HomeScreen/image/meditation.jpg",
+    "assets/images/baby.jpg",
+    "assets/images/study.jpg",
+    "assets/images/sleep.jpg",
+    "assets/images/meditation.jpg",
   ];
 
   @override
@@ -89,7 +89,11 @@ PageView makePageView(List<String> imageTitle, List<String> imagePath) {
             ),
             Text(
               imageTitle[index],
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+              style: const TextStyle(
+                  fontSize: 40,
+                  fontFamily: 'HandWriting',
+                  fontWeight: FontWeight.w900,
+              ),
             ),
           ],
         ),

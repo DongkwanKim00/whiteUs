@@ -5,15 +5,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
 
 class Mp3UploaderDownloader extends StatefulWidget {
-  const Mp3UploaderDownloader({super.key});
+  const Mp3UploaderDownloader({Key? key});
 
   @override
   _Mp3UploaderDownloaderState createState() => _Mp3UploaderDownloaderState();
 }
 
 class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
-  //final String _filePath = '';
-
   final Reference storageRef = FirebaseStorage.instance.ref('').child('');
   List<String> titles = [];
 
@@ -71,25 +69,43 @@ class _Mp3UploaderDownloaderState extends State<Mp3UploaderDownloader> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await pickMp3();
-        },
-        backgroundColor: Colors.blue.shade200,
-        child: const Icon(Icons.add),
-      ),
       body: ListView.builder(
         itemCount: titles.length,
         itemBuilder: (BuildContext context, int index) {
           final title = titles[index];
-          return ListTile(
-            title: Text(title),
-            trailing: IconButton(
-              icon: const Icon(Icons.download),
-              onPressed: () => _downloadFile(title),
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.teal.shade900, Colors.teal.shade500],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListTile(
+              title: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              leading: const Icon(Icons.music_note, color: Colors.white),
+              trailing: IconButton(
+                icon: const Icon(Icons.download, color: Colors.white),
+                onPressed: () => _downloadFile(title),
+              ),
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await pickMp3();
+        },
+        backgroundColor: Colors.pinkAccent.shade200,
+        child: const Icon(Icons.add),
       ),
     );
   }

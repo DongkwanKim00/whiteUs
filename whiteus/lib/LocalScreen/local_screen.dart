@@ -118,50 +118,69 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('오디오 플레이어'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Audio Player'),
+      // ),
       body: ListView.builder(
         itemCount: audioFiles.length,
         itemBuilder: (context, index) {
           AudioFile audioFile = audioFiles[index];
 
-          return ListTile(
-            title: Text(audioFile.name),
-            subtitle: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.play_arrow),
-                  onPressed: () {
-                    playAudio(audioFile.audioPlayer, audioFile.path);
-                  },
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.teal.shade900, Colors.teal.shade500],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListTile(
+              title: Text(
+                audioFile.name,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-                IconButton(
-                  icon: const Icon(Icons.pause),
-                  onPressed: () {
-                    pauseAudio(audioFile.audioPlayer);
-                  },
-                ),
-                Expanded(
-                  child: Slider(
-                    onChanged: (double value) {
-                      int millis = (audioFile.totalDuration.inMilliseconds * value).round();
-                      seekAudio(audioFile.audioPlayer, Duration(milliseconds: millis));
+              ),
+              leading: const Icon(Icons.music_note, color: Colors.white),
+              subtitle: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.play_arrow, color: Colors.white),
+                    onPressed: () {
+                      playAudio(audioFile.audioPlayer, audioFile.path);
                     },
-                    min: 0.0,
-                    max: 1.0,
-                    value: audioFile.totalDuration.inMilliseconds > 0
-                        ? audioFile.currentPosition.inMilliseconds / audioFile.totalDuration.inMilliseconds
-                        : 0.0,
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {
-                    deleteFile(audioFile.path);
-                  },
-                ),
-              ],
+                  IconButton(
+                    icon: const Icon(Icons.pause, color: Colors.white),
+                    onPressed: () {
+                      pauseAudio(audioFile.audioPlayer);
+                    },
+                  ),
+                  Expanded(
+                    child: Slider(
+                      onChanged: (double value) {
+                        int millis = (audioFile.totalDuration.inMilliseconds * value).round();
+                        seekAudio(audioFile.audioPlayer, Duration(milliseconds: millis));
+                      },
+                      min: 0.0,
+                      max: 1.0,
+                      value: audioFile.totalDuration.inMilliseconds > 0
+                          ? audioFile.currentPosition.inMilliseconds / audioFile.totalDuration.inMilliseconds
+                          : 0.0,
+                      activeColor: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.white),
+                    onPressed: () {
+                      deleteFile(audioFile.path);
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         },

@@ -88,19 +88,19 @@ class _BaseScreenState extends State<BaseScreen> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: 'HOME',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
-              label: 'Shopping cart',
+              label: 'SHOPPING CART',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.comment),
-              label: 'Community',
+              label: 'COMMUNITY',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.store),
-              label: 'Store',
+              label: 'STORE',
             ),
           ],
           type: BottomNavigationBarType.fixed,
@@ -109,6 +109,14 @@ class _BaseScreenState extends State<BaseScreen> {
           onTap: _onItemTapped,
           selectedIconTheme: IconThemeData(color: Colors.amberAccent),
           unselectedIconTheme: IconThemeData(color: Colors.white),
+          selectedLabelStyle: TextStyle(
+            fontFamily: 'HandWriting',
+            fontSize: 18,
+          ),
+          unselectedLabelStyle: TextStyle(
+            fontFamily: 'HandWriting',
+            fontSize: 18,
+          ),
         ),
       ),
     );
