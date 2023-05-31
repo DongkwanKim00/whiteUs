@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: const Color.fromRGBO(40, 44, 55, 1),
-        scaffoldBackgroundColor: const Color.fromRGBO(30, 34, 45, 1),
+        scaffoldBackgroundColor: const Color.fromRGBO(14,14,15, 0),
+        fontFamily: "SUIT",
         textTheme: const TextTheme(
           displayLarge: TextStyle(
               fontSize: 72.0,

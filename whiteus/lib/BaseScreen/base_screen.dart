@@ -17,7 +17,6 @@ class _BaseScreenState extends State<BaseScreen> {
     HomeScreen(),
     // ignore: prefer_const_constructors
     AudioPlayerPage(),
-
     const ComScreen(),
     const Mp3UploaderDownloader(), //이거 수정했음. 원래 StoreScreen
   ];
@@ -32,39 +31,85 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: new Text(
           'White Us',
-          style: TextStyle(fontWeight: FontWeight.w800),
+          style: new TextStyle(
+            fontWeight: FontWeight.w900,
+            fontFamily: 'HandWriting',
+            fontSize: 60,
+          ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.black87,
+        // App bar gradient(형권)
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                Color(0Xff7474BF),
+                Color(0Xff348AC7),
+              ],
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent, //지워야됨(형권)
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      //이 부분 gradient가 잘 안되는 상황임.(형권)
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0Xff348AC7),
+              Color(0Xff7474BF),
+            ],
+          ),
+        ),
+        child: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0Xff7474BF),
+              Color(0Xff348AC7),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.topRight,
+            stops: [0.0, 0.8],
+            tileMode: TileMode.clamp,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Shopping cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.comment),
-            label: 'Community',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.store),
-            label: 'Store',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        backgroundColor: Colors.black87,
-        onTap: _onItemTapped,
+        ),
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              label: 'Shopping cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.comment),
+              label: 'Community',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.store),
+              label: 'Store',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          backgroundColor: Colors.transparent, //투명한게 깔끔해서 바꿈.
+          onTap: _onItemTapped,
+          selectedIconTheme: IconThemeData(color: Colors.amberAccent),
+          unselectedIconTheme: IconThemeData(color: Colors.white),
+        ),
       ),
     );
   }
