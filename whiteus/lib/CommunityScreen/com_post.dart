@@ -81,9 +81,12 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        gradient: LinearGradient(
+          colors: [Color(0xFF6A85FF), Color(0xFF9346FF)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -168,7 +171,7 @@ class _PostCardState extends State<PostCard> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.white, // 노란색 배경 색상
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(

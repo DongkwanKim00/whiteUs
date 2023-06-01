@@ -56,8 +56,8 @@ class _CardScreenState extends State<CardScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black87,
-                  Colors.blueGrey.shade900,
+                  Color(0xFF348AC7),
+                  Color(0xFF7474BF),
                 ],
               ),
             ),
@@ -117,9 +117,43 @@ class _CardScreenState extends State<CardScreen> {
                     }
                   },
                   children: sortedVideoIds
-                      .map((id) => YoutubeWidget(
-                    videoId: id,
-                    key: Key(id),
+                      .asMap()
+                      .entries
+                      .map((entry) => Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Rank ${entry.key + 1}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: YoutubeWidget(
+                            videoId: entry.value,
+                            key: Key(entry.value),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
                   ))
                       .toList(),
                 ),
@@ -135,6 +169,7 @@ class _CardScreenState extends State<CardScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20), // 추가된 여백
             ],
           ),
         ],
