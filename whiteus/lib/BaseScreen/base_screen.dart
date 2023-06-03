@@ -31,9 +31,9 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: new Text(
+        title: const Text(
           'White Us',
-          style: new TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w900,
             fontFamily: 'HandWriting',
             fontSize: 60,
@@ -42,7 +42,7 @@ class _BaseScreenState extends State<BaseScreen> {
         centerTitle: true,
         // App bar gradient(형권)
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -57,7 +57,7 @@ class _BaseScreenState extends State<BaseScreen> {
       ),
       //이 부분 gradient가 잘 안되는 상황임.(형권)
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomRight,
@@ -72,7 +72,7 @@ class _BaseScreenState extends State<BaseScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Color(0Xff7474BF),
@@ -107,13 +107,13 @@ class _BaseScreenState extends State<BaseScreen> {
           currentIndex: _selectedIndex,
           backgroundColor: Colors.transparent, //투명한게 깔끔해서 바꿈.
           onTap: _onItemTapped,
-          selectedIconTheme: IconThemeData(color: Colors.amberAccent),
-          unselectedIconTheme: IconThemeData(color: Colors.white),
-          selectedLabelStyle: TextStyle(
+          selectedIconTheme: const IconThemeData(color: Colors.amberAccent),
+          unselectedIconTheme: const IconThemeData(color: Colors.white),
+          selectedLabelStyle: const TextStyle(
             fontFamily: 'HandWriting',
             fontSize: 18,
           ),
-          unselectedLabelStyle: TextStyle(
+          unselectedLabelStyle: const TextStyle(
             fontFamily: 'HandWriting',
             fontSize: 18,
           ),

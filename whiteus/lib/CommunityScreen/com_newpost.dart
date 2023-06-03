@@ -49,6 +49,7 @@ class NewPost extends StatelessWidget {
                     'recommendNum': 0,
                     'recommendList': <String>[],
                   });
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context);
                 },
                 child: const Text("Upload")),

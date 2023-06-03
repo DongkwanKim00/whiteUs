@@ -10,7 +10,8 @@ class AudioFile {
   Duration totalDuration = Duration.zero;
   Duration currentPosition = Duration.zero;
 
-  AudioFile({required this.name, required this.path, required this.audioPlayer});
+  AudioFile(
+      {required this.name, required this.path, required this.audioPlayer});
 }
 
 class AudioPlayerPage extends StatefulWidget {
@@ -20,7 +21,8 @@ class AudioPlayerPage extends StatefulWidget {
   _AudioPlayerPageState createState() => _AudioPlayerPageState();
 }
 
-class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingObserver {
+class _AudioPlayerPageState extends State<AudioPlayerPage>
+    with WidgetsBindingObserver {
   List<AudioFile> audioFiles = [];
   Timer? positionTimer;
   AudioPlayer? currentAudioPlayer;
@@ -28,7 +30,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     loadAudioFiles();
   }
 
@@ -38,7 +40,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
     for (var audioFile in audioFiles) {
       audioFile.audioPlayer.dispose();
     }
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -52,7 +54,8 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
   }
 
   Future<void> loadAudioFiles() async {
-    Directory directory = Directory('/data/user/0/com.example.whiteus/app_flutter/');
+    Directory directory =
+        Directory('/data/user/0/com.example.whiteus/app_flutter/');
     List<FileSystemEntity> files = directory.listSync();
 
     audioFiles.clear();
@@ -60,15 +63,19 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
     for (var file in files) {
       if (file.path.endsWith('.mp3')) {
         String fileName = file.path.split('/').last;
-        AudioPlayer audioPlayer = AudioPlayer()..setReleaseMode(ReleaseMode.stop);
+        AudioPlayer audioPlayer = AudioPlayer()
+          ..setReleaseMode(ReleaseMode.stop);
 
         audioPlayer.onDurationChanged.listen((Duration d) {
           setState(() {
-            audioFiles.firstWhere((element) => element.audioPlayer == audioPlayer).totalDuration = d;
+            audioFiles
+                .firstWhere((element) => element.audioPlayer == audioPlayer)
+                .totalDuration = d;
           });
         });
 
-        audioFiles.add(AudioFile(name: fileName, path: file.path, audioPlayer: audioPlayer));
+        audioFiles.add(AudioFile(
+            name: fileName, path: file.path, audioPlayer: audioPlayer));
       }
     }
 
@@ -103,7 +110,9 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
       audioPlayer.getCurrentPosition().then((Duration? position) {
         if (position != null) {
           setState(() {
-            audioFiles.firstWhere((element) => element.audioPlayer == audioPlayer).currentPosition = position;
+            audioFiles
+                .firstWhere((element) => element.audioPlayer == audioPlayer)
+                .currentPosition = position;
           });
         }
       });
@@ -139,7 +148,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
             child: ListTile(
               title: Text(
                 audioFile.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -162,13 +171,17 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> with WidgetsBindingOb
                   Expanded(
                     child: Slider(
                       onChanged: (double value) {
-                        int millis = (audioFile.totalDuration.inMilliseconds * value).round();
-                        seekAudio(audioFile.audioPlayer, Duration(milliseconds: millis));
+                        int millis =
+                            (audioFile.totalDuration.inMilliseconds * value)
+                                .round();
+                        seekAudio(audioFile.audioPlayer,
+                            Duration(milliseconds: millis));
                       },
                       min: 0.0,
                       max: 1.0,
                       value: audioFile.totalDuration.inMilliseconds > 0
-                          ? audioFile.currentPosition.inMilliseconds / audioFile.totalDuration.inMilliseconds
+                          ? audioFile.currentPosition.inMilliseconds /
+                              audioFile.totalDuration.inMilliseconds
                           : 0.0,
                       activeColor: Colors.white,
                     ),

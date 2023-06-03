@@ -19,7 +19,6 @@ class CardScreen extends StatefulWidget {
 }
 
 class _CardScreenState extends State<CardScreen> {
-  final PageController pageController = PageController();
   bool showIcon = true;
 
   List<String> sortedVideoIds = [];
@@ -35,7 +34,8 @@ class _CardScreenState extends State<CardScreen> {
     Map<String, int> viewCounts = {};
 
     for (String videoId in widget.videoIds) {
-      var videoInfo = await fetchVideoInfo(videoId, 'AIzaSyAvmIOOgWdDr6dieGgUK40wuUjmV8i_nAA');
+      var videoInfo = await fetchVideoInfo(
+          videoId, 'AIzaSyAvmIOOgWdDr6dieGgUK40wuUjmV8i_nAA');
       viewCounts[videoId] = videoInfo['viewCount'];
     }
 
@@ -51,7 +51,7 @@ class _CardScreenState extends State<CardScreen> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -107,56 +107,52 @@ class _CardScreenState extends State<CardScreen> {
                 height: 20,
               ),
               Expanded(
-                child: PageView(
-                  controller: pageController,
-                  onPageChanged: (page) {
-                    if (mounted) {
-                      setState(() {
-                        showIcon = (page == 2 ? false : true);
-                      });
-                    }
-                  },
-                  children: sortedVideoIds
-                      .asMap()
-                      .entries
-                      .map((entry) => Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Rank ${entry.key + 1}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 10,
-                              offset: Offset(0, 5),
+                child: PageView.builder(
+                    itemCount: sortedVideoIds.length,
+                    onPageChanged: (page) {
+                      if (mounted) {
+                        setState(() {
+                          showIcon = (page != 4 ? true : false);
+                        });
+                      }
+                    },
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Rank ${index + 1}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: YoutubeWidget(
-                            videoId: entry.value,
-                            key: Key(entry.value),
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                    ],
-                  ))
-                      .toList(),
-                ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: YoutubeWidget(
+                                videoId: sortedVideoIds[index],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      );
+                    }),
               ),
               Visibility(
                 visible: showIcon,
@@ -182,75 +178,75 @@ class _CardScreenState extends State<CardScreen> {
 class BabyScreen extends CardScreen {
   const BabyScreen({Key? key})
       : super(
-    key: key,
-    title: 'Baby',
-    image: 'assets/images/baby.jpg',
-    id: '1',
-  );
+          key: key,
+          title: 'Baby',
+          image: 'assets/images/baby.jpg',
+          id: '1',
+        );
 
   @override
   List<String> get videoIds => [
-    '4owTdwvbyNA',
-    'XgxRHa26JLo',
-    'oewj_XEM1js',
-    'W-vBu2rf8TI',
-    'LdQJw5S4nAQ'
-  ]; // 비디오 아이디 입력
+        '4owTdwvbyNA',
+        'XgxRHa26JLo',
+        'oewj_XEM1js',
+        'W-vBu2rf8TI',
+        'LdQJw5S4nAQ'
+      ]; // 비디오 아이디 입력
 }
 
 class StudyScreen extends CardScreen {
   const StudyScreen({Key? key})
       : super(
-    key: key,
-    title: 'Study',
-    image: 'assets/images/study.jpg',
-    id: '2',
-  );
+          key: key,
+          title: 'Study',
+          image: 'assets/images/study.jpg',
+          id: '2',
+        );
 
   @override
   List<String> get videoIds => [
-    '_4kHxtiuML0',
-    'WPni755-Krg',
-    'Jvgx5HHJ0qw',
-    '1_G60OdEzXs',
-    'wGdodz6ck7g'
-  ];
+        '_4kHxtiuML0',
+        'WPni755-Krg',
+        'Jvgx5HHJ0qw',
+        '1_G60OdEzXs',
+        'wGdodz6ck7g'
+      ];
 }
 
 class SleepScreen extends CardScreen {
   const SleepScreen({Key? key})
       : super(
-    key: key,
-    title: 'Sleep',
-    image: 'assets/images/sleep.jpg',
-    id: '3',
-  );
+          key: key,
+          title: 'Sleep',
+          image: 'assets/images/sleep.jpg',
+          id: '3',
+        );
 
   @override
   List<String> get videoIds => [
-    '77ZozI0rw7w',
-    'u5EWe5baBck',
-    'm8VDZ-z8OKk',
-    'bP9gMpl1gyQ',
-    '1ZYbU82GVz4'
-  ];
+        '77ZozI0rw7w',
+        'u5EWe5baBck',
+        'm8VDZ-z8OKk',
+        'bP9gMpl1gyQ',
+        '1ZYbU82GVz4'
+      ];
 }
 
 class MeditationScreen extends CardScreen {
   const MeditationScreen({Key? key})
       : super(
-    key: key,
-    title: 'Meditation',
-    image: 'assets/images/meditation.jpg',
-    id: '4',
-  );
+          key: key,
+          title: 'Meditation',
+          image: 'assets/images/meditation.jpg',
+          id: '4',
+        );
 
   @override
   List<String> get videoIds => [
-    'FTqrQsSIKR0',
-    'V1RPi2MYptM',
-    'Ho91a_GwYxs',
-    'aIIEI33EUqI',
-    'Gqfk5sr9fpw'
-  ];
+        'FTqrQsSIKR0',
+        'V1RPi2MYptM',
+        'Ho91a_GwYxs',
+        'aIIEI33EUqI',
+        'Gqfk5sr9fpw'
+      ];
 }
